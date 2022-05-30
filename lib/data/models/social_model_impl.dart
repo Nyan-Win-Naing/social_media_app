@@ -20,4 +20,17 @@ class SocialModelImpl extends SocialModel {
     return mDataAgent.getNewsFeed();
   }
 
+  @override
+  Future<void> addNewPost(String description) {
+    var currentMilliseconds = DateTime.now().millisecondsSinceEpoch;
+    var newPost = NewsFeedVO(
+      id: currentMilliseconds,
+      userName: "Nyan Win Naing",
+      postImage: "",
+      description: description,
+      profilePicture: "https://wallpapers.com/images/high/happy-jerry-mouse-2021-illustration-x1kxds1wc02j9l8l.jpg",
+    );
+    return mDataAgent.addNewPost(newPost);
+  }
+
 }

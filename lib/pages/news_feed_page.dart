@@ -64,27 +64,31 @@ class NewsFeedPage extends StatelessWidget {
         body: Container(
           color: Colors.white,
           child: Consumer<NewsFeedBloc>(
-            builder: (context, bloc, child) =>
-                ListView.separated(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: MARGIN_LARGE,
-                    horizontal: MARGIN_LARGE,
-                  ),
-                  itemBuilder: (context, index) {
-                    return NewsFeedItemView(
-                      mNewsFeed: bloc.newsFeed?[index],
-                      onTapDelete: (newsFeedId) {
-                        bloc.onTapDeletePost(newsFeedId);
-                      },
-                    );
+            builder: (context, bloc, child) => ListView.separated(
+              padding: const EdgeInsets.symmetric(
+                vertical: MARGIN_LARGE,
+                horizontal: MARGIN_LARGE,
+              ),
+              itemBuilder: (context, index) {
+                return NewsFeedItemView(
+                  mNewsFeed: bloc.newsFeed?[index],
+                  onTapDelete: (newsFeedId) {
+                    bloc.onTapDeletePost(newsFeedId);
                   },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      height: MARGIN_XLARGE,
-                    );
+                  onTapEdit: (newsFeedId) {
+                    Future.delayed(Duration(milliseconds: 1000)).then((value) {
+                      _navigateToEditPostPage(context, newsFeedId);
+                    });
                   },
-                  itemCount: bloc.newsFeed?.length ?? 0,
-                ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return const SizedBox(
+                  height: MARGIN_XLARGE,
+                );
+              },
+              itemCount: bloc.newsFeed?.length ?? 0,
+            ),
           ),
         ),
       ),
@@ -95,6 +99,16 @@ class NewsFeedPage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const AddNewPostPage(),
+      ),
+    );
+  }
+
+  void _navigateToEditPostPage(BuildContext context, int newsFeedId) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AddNewPostPage(
+          newsFeedId: newsFeedId,
+        ),
       ),
     );
   }

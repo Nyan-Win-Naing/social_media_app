@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "850856206885",
+    "project_id": "social-media-app-fb244",
+    "storage_bucket": "social-media-app-fb244.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850856206885:android:956ea13ae1de956ff8d5cc",
+        "android_client_info": {
+          "package_name": "com.padc.socialmedia.social_media_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "850856206885-966koudrqpkis4p8v3ugt932sdiefuc5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGrZg2cfHD_3jyBZN1IHIr-86ZSEzHsMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "850856206885-966koudrqpkis4p8v3ugt932sdiefuc5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

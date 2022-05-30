@@ -6,8 +6,13 @@ import 'package:social_media_app/resources/images.dart';
 class NewsFeedItemView extends StatelessWidget {
 
   final NewsFeedVO? mNewsFeed;
+  final Function(int) onTapDelete;
 
-  const NewsFeedItemView({Key? key, required this.mNewsFeed}) : super(key: key);
+  const NewsFeedItemView({
+    Key? key,
+    required this.mNewsFeed,
+    required this.onTapDelete,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,11 @@ class NewsFeedItemView extends StatelessWidget {
               userName: mNewsFeed?.userName ?? "",
             ),
             Spacer(),
-            MoreButtonView(),
+            MoreButtonView(
+              onTapDelete: () {
+                onTapDelete(mNewsFeed?.id ?? 0);
+              },
+            ),
           ],
         ),
         const SizedBox(
@@ -121,18 +130,33 @@ class PostImageView extends StatelessWidget {
 }
 
 class MoreButtonView extends StatelessWidget {
+  final Function onTapDelete;
+
   const MoreButtonView({
     Key? key,
+    required this.onTapDelete,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: const Icon(
+    return PopupMenuButton(
+      icon: const Icon(
         Icons.more_vert,
         color: Colors.grey,
       ),
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          child: Text("Edit"),
+          value: 1,
+        ),
+        PopupMenuItem(
+          onTap: () {
+            onTapDelete();
+          },
+          child: const Text("Delete"),
+          value: 2,
+        )
+      ],
     );
   }
 }

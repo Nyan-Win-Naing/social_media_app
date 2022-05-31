@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:social_media_app/data/models/social_model.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
 import 'package:social_media_app/network/cloud_firestore_data_agent_impl.dart';
@@ -24,16 +26,28 @@ class SocialModelImpl extends SocialModel {
   }
 
   @override
-  Future<void> addNewPost(String description) {
+  Future<void> addNewPost(String description, File? imageFile) {
+    if(imageFile != null) {
+      return mDataAgent
+          .uploadFileToFirebase(imageFile)
+          .then((downloadUrl) => craftNewsFeedVO(description, downloadUrl))
+          .then((newPost) => mDataAgent.addNewPost(newPost));
+    } else {
+      return craftNewsFeedVO(description, "")
+          .then((newPost) => mDataAgent.addNewPost(newPost));
+    }
+  }
+
+  Future<NewsFeedVO> craftNewsFeedVO(String description, String imageUrl) {
     var currentMilliseconds = DateTime.now().millisecondsSinceEpoch;
     var newPost = NewsFeedVO(
       id: currentMilliseconds,
       userName: "Nyan Win Naing",
-      postImage: "",
+      postImage: imageUrl,
       description: description,
       profilePicture: "https://wallpapers.com/images/high/happy-jerry-mouse-2021-illustration-x1kxds1wc02j9l8l.jpg",
     );
-    return mDataAgent.addNewPost(newPost);
+    return Future.value(newPost);
   }
 
   @override
@@ -42,7 +56,7 @@ class SocialModelImpl extends SocialModel {
   }
 
   @override
-  Future<void> editPost(NewsFeedVO newsFeed) {
+  Future<void> editPost(NewsFeedVO newsFeed, File? imageFile) {
     return mDataAgent.addNewPost(newsFeed);
   }
 

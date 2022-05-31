@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/blocs/add_new_post_bloc.dart';
 import 'package:social_media_app/resources/dimens.dart';
@@ -19,66 +20,109 @@ class AddNewPostPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => AddNewPostBloc(newsFeedId: newsFeedId),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: false,
-          title: Container(
-            margin: const EdgeInsets.only(
-              left: MARGIN_MEDIUM,
-            ),
-            child: const Text(
-              "Add New Post",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: TEXT_HEADING_1X,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          elevation: 0.0,
-          leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(
-              Icons.chevron_left,
-              color: Colors.black,
-              size: MARGIN_XLARGE,
-            ),
-          ),
-        ),
-        body: Container(
-          margin: const EdgeInsets.only(
-            top: MARGIN_XLARGE,
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: MARGIN_LARGE),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                ProfileImageAndNameView(),
-                SizedBox(
-                  height: MARGIN_LARGE,
+      child: Selector<AddNewPostBloc, bool>(
+        selector: (context, bloc) => bloc.isLoading,
+        builder: (context, isLoading, child) =>
+            Stack(
+              children: [
+                Scaffold(
+                  backgroundColor: Colors.white,
+                  appBar: AppBar(
+                    backgroundColor: Colors.white,
+                    centerTitle: false,
+                    title: Container(
+                      margin: const EdgeInsets.only(
+                        left: MARGIN_MEDIUM,
+                      ),
+                      child: const Text(
+                        "Add New Post",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: TEXT_HEADING_1X,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    elevation: 0.0,
+                    leading: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(
+                        Icons.chevron_left,
+                        color: Colors.black,
+                        size: MARGIN_XLARGE,
+                      ),
+                    ),
+                  ),
+                  body: Container(
+                    margin: const EdgeInsets.only(
+                      top: MARGIN_XLARGE,
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: MARGIN_LARGE),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          ProfileImageAndNameView(),
+                          SizedBox(
+                            height: MARGIN_LARGE,
+                          ),
+                          AddNewPostTextFieldView(),
+                          SizedBox(
+                            height: MARGIN_MEDIUM_2,
+                          ),
+                          PostDescriptionErrorView(),
+                          SizedBox(
+                            height: MARGIN_MEDIUM_2,
+                          ),
+                          PostImageView(),
+                          SizedBox(
+                            height: MARGIN_LARGE,
+                          ),
+                          PostButtonView(),
+                          SizedBox(
+                            height: MARGIN_XLARGE,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                AddNewPostTextFieldView(),
-                SizedBox(
-                  height: MARGIN_MEDIUM_2,
+                Visibility(
+                  visible: isLoading,
+                  child: Container(
+                    color: Colors.black12,
+                    child: const Center(
+                      child: LoadingView(),
+                    ),
+                  ),
                 ),
-                PostDescriptionErrorView(),
-                SizedBox(
-                  height: MARGIN_MEDIUM_2,
-                ),
-                PostImageView(),
-                SizedBox(
-                  height: MARGIN_LARGE,
-                ),
-                PostButtonView(),
-                SizedBox(
-                  height: MARGIN_XLARGE,
-                )
               ],
             ),
+      ),
+    );
+  }
+}
+
+class LoadingView extends StatelessWidget {
+  const LoadingView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black12,
+      child: const Center(
+        child: SizedBox(
+          width: MARGIN_XXLARGE,
+          height: MARGIN_XXLARGE,
+          child: LoadingIndicator(
+            indicatorType: Indicator.ballRotate,
+            colors: [Colors.white],
+            strokeWidth: 2,
+            backgroundColor: Colors.transparent,
+            pathBackgroundColor: Colors.black,
           ),
         ),
       ),

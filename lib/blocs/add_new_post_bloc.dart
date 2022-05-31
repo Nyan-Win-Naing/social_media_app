@@ -43,12 +43,20 @@ class AddNewPostBloc extends ChangeNotifier {
       _notifySafely();
       return Future.error("Error");
     } else {
+      isLoading = true;
+      _notifySafely();
       isAddNewPostError = false;
       // return _model.addNewPost(newPostDescription);
       if(isInEditMode) {
-        return _editNewsFeedPost();
+        return _editNewsFeedPost().then((value) {
+          isLoading = false;
+          _notifySafely();
+        });
       } else {
-        return _createNewNewsFeedPost();
+        return _createNewNewsFeedPost().then((value) {
+          isLoading = false;
+          _notifySafely();
+        });
       }
     }
   }
@@ -94,13 +102,13 @@ class AddNewPostBloc extends ChangeNotifier {
   Future<dynamic> _editNewsFeedPost() {
     mNewsFeed?.description = newPostDescription;
     if(mNewsFeed != null) {
-      return _model.editPost(mNewsFeed!);
+      return _model.editPost(mNewsFeed!, chosenImageFile);
     } else {
       return Future.error("Error");
     }
   }
 
   Future<void> _createNewNewsFeedPost() {
-    return _model.addNewPost(newPostDescription);
+    return _model.addNewPost(newPostDescription, chosenImageFile);
   }
 }

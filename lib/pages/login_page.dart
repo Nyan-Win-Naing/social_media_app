@@ -23,72 +23,74 @@ class LoginPage extends StatelessWidget {
           selector: (context, bloc) => bloc.isLoading,
           builder: (context, isLoading, child) => Stack(
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  top: LOGIN_SCREEN_TOP_PADDING,
-                  bottom: MARGIN_LARGE,
-                  left: MARGIN_XLARGE,
-                  right: MARGIN_XLARGE,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      LBL_LOGIN,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: TEXT_BIG,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XXLARGE,
-                    ),
-                    Consumer<LoginBloc>(
-                      builder: (context, bloc, child) => LabelAndTextFieldView(
-                        label: LBL_EMAIL,
-                        hint: HINT_EMAIL,
-                        onChanged: (email) => bloc.onEmailChanged(email),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XLARGE,
-                    ),
-                    Consumer<LoginBloc>(
-                      builder: (context, bloc, child) => LabelAndTextFieldView(
-                        label: LBL_PASSWORD,
-                        hint: HINT_PASSWORD,
-                        onChanged: (password) =>
-                            bloc.onPasswordChanged(password),
-                        isSecure: true,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XXLARGE,
-                    ),
-                    Consumer<LoginBloc>(
-                      builder: (context, bloc, child) => TextButton(
-                        onPressed: () {
-                          bloc
-                              .onTapLogin()
-                              .then((_) => navigateToScreen(
-                              context, const NewsFeedPage()))
-                              .catchError((error) => showSnackBarWithMessage(
-                              context, error.toString()));
-                        },
-                        child: const PrimaryButtonView(
-                          label: LBL_LOGIN,
+              SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: LOGIN_SCREEN_TOP_PADDING,
+                    bottom: MARGIN_LARGE,
+                    left: MARGIN_XLARGE,
+                    right: MARGIN_XLARGE,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        LBL_LOGIN,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: TEXT_BIG,
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_LARGE,
-                    ),
-                    const ORView(),
-                    const SizedBox(
-                      height: MARGIN_LARGE,
-                    ),
-                    const RegisterTriggerView()
-                  ],
+                      const SizedBox(
+                        height: MARGIN_XXLARGE,
+                      ),
+                      Consumer<LoginBloc>(
+                        builder: (context, bloc, child) => LabelAndTextFieldView(
+                          label: LBL_EMAIL,
+                          hint: HINT_EMAIL,
+                          onChanged: (email) => bloc.onEmailChanged(email),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_XLARGE,
+                      ),
+                      Consumer<LoginBloc>(
+                        builder: (context, bloc, child) => LabelAndTextFieldView(
+                          label: LBL_PASSWORD,
+                          hint: HINT_PASSWORD,
+                          onChanged: (password) =>
+                              bloc.onPasswordChanged(password),
+                          isSecure: true,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_XXLARGE,
+                      ),
+                      Consumer<LoginBloc>(
+                        builder: (context, bloc, child) => TextButton(
+                          onPressed: () {
+                            bloc
+                                .onTapLogin()
+                                .then((_) => navigateToScreen(
+                                context, const NewsFeedPage()))
+                                .catchError((error) => showSnackBarWithMessage(
+                                context, error.toString()));
+                          },
+                          child: const PrimaryButtonView(
+                            label: LBL_LOGIN,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      const ORView(),
+                      const SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      const RegisterTriggerView()
+                    ],
+                  ),
                 ),
               ),
               Visibility(

@@ -83,26 +83,26 @@ class RealTimeDatabaseDataAgentImpl extends SocialDataAgent {
 
   @override
   UserVO getLoggedInUser() {
-    // TODO: implement getLoggedInUser
-    throw UnimplementedError();
+    return UserVO(
+      id: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      userName: auth.currentUser?.displayName,
+    );
   }
 
   @override
   bool isLoggedIn() {
-    // TODO: implement isLoggedIn
-    throw UnimplementedError();
+    return auth.currentUser != null;
   }
 
   @override
   Future logOut() {
-    // TODO: implement logOut
-    throw UnimplementedError();
+    return auth.signOut();
   }
 
   @override
   Future login(String email, String password) {
-    // TODO: implement login
-    throw UnimplementedError();
+    return auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   @override

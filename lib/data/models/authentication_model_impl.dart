@@ -19,26 +19,22 @@ class AuthenticationModelImpl extends AuthenticationModel {
 
   @override
   UserVO getLoggedInUser() {
-    // TODO: implement getLoggedInUser
-    throw UnimplementedError();
+    return mDataAgent.getLoggedInUser();
   }
 
   @override
   bool isLoggedIn() {
-    // TODO: implement isLoggedIn
-    throw UnimplementedError();
+    return mDataAgent.isLoggedIn();
   }
 
   @override
   Future<void> logOut() {
-    // TODO: implement logOut
-    throw UnimplementedError();
+    return mDataAgent.logOut();
   }
 
   @override
   Future<void> login(String email, String password) {
-    // TODO: implement login
-    throw UnimplementedError();
+    return mDataAgent.login(email, password);
   }
 
   @override

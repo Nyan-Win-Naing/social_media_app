@@ -17,5 +17,15 @@ class FCMService {
     messaging.getToken().then((fcmToken) {
       debugPrint("FCM Token for Device ========> $fcmToken");
     });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
+      debugPrint(
+        "User pressed the notification ${remoteMessage.data['post_id']}"
+      );
+    });
+
+    messaging.getInitialMessage().then((remoteMessage) {
+      debugPrint("Message Launched ${remoteMessage?.data["post_id"]}");
+    });
   }
 }

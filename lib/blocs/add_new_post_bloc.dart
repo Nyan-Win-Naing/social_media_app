@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:social_media_app/data/models/social_model.dart';
 import 'package:social_media_app/data/models/social_model_impl.dart';
@@ -8,6 +10,10 @@ class AddNewPostBloc extends ChangeNotifier {
   String newPostDescription = "";
   bool isAddNewPostError = false;
   bool isDisposed = false;
+  bool isLoading = false;
+
+  /// Image
+  File? chosenImageFile;
 
   /// For Edit Mode
   bool isInEditMode = false;
@@ -45,6 +51,16 @@ class AddNewPostBloc extends ChangeNotifier {
         return _createNewNewsFeedPost();
       }
     }
+  }
+
+  void onImageChosen(File imageFile) {
+    chosenImageFile = imageFile;
+    _notifySafely();
+  }
+
+  void onTapDeleteImage() {
+    chosenImageFile = null;
+    _notifySafely();
   }
 
   @override

@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:social_media_app/data/models/authentication_model.dart';
+import 'package:social_media_app/data/models/authentication_model_impl.dart';
 import 'package:social_media_app/data/models/social_model.dart';
 import 'package:social_media_app/data/models/social_model_impl.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
+import 'package:social_media_app/data/vos/user_vo.dart';
 
 class AddNewPostBloc extends ChangeNotifier {
   /// State
@@ -11,6 +14,7 @@ class AddNewPostBloc extends ChangeNotifier {
   bool isAddNewPostError = false;
   bool isDisposed = false;
   bool isLoading = false;
+  UserVO? _loggedInUser;
 
   /// Image
   File? chosenImageFile;
@@ -23,8 +27,10 @@ class AddNewPostBloc extends ChangeNotifier {
 
   /// Model
   final SocialModel _model = SocialModelImpl();
+  final AuthenticationModel _authenticationModel = AuthenticationModelImpl();
 
   AddNewPostBloc({int? newsFeedId}) {
+    _loggedInUser = _authenticationModel.getLoggedInUser();
     if(newsFeedId != null) {
       isInEditMode = true;
       _prepopulateDataForEditMode(newsFeedId);
@@ -88,7 +94,7 @@ class AddNewPostBloc extends ChangeNotifier {
   }
 
   void _prepopulateDataForAddNewPost() {
-    userName = "Nyan Win Naing";
+    userName = _loggedInUser?.userName ?? "";
     profilePicture = "https://wallpapers.com/images/high/happy-jerry-mouse-2021-illustration-x1kxds1wc02j9l8l.jpg";
     _notifySafely();
   }

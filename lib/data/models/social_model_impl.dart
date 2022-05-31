@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:social_media_app/data/models/authentication_model.dart';
+import 'package:social_media_app/data/models/authentication_model_impl.dart';
 import 'package:social_media_app/data/models/social_model.dart';
 import 'package:social_media_app/data/vos/news_feed_vo.dart';
 import 'package:social_media_app/network/cloud_firestore_data_agent_impl.dart';
@@ -19,6 +21,9 @@ class SocialModelImpl extends SocialModel {
   // SocialDataAgent mDataAgent = RealTimeDatabaseDataAgentImpl();
 
   SocialDataAgent mDataAgent = CloudFirestoreDataAgentImpl();
+
+  /// Other Models
+  final AuthenticationModel _authenticationModel = AuthenticationModelImpl();
 
   @override
   Stream<List<NewsFeedVO>> getNewsFeed() {
@@ -42,7 +47,7 @@ class SocialModelImpl extends SocialModel {
     var currentMilliseconds = DateTime.now().millisecondsSinceEpoch;
     var newPost = NewsFeedVO(
       id: currentMilliseconds,
-      userName: "Nyan Win Naing",
+      userName: _authenticationModel.getLoggedInUser().userName,
       postImage: imageUrl,
       description: description,
       profilePicture: "https://wallpapers.com/images/high/happy-jerry-mouse-2021-illustration-x1kxds1wc02j9l8l.jpg",

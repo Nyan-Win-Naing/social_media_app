@@ -10,14 +10,18 @@ class CloudFirestoreDataAgentImpl extends SocialDataAgent {
 
   @override
   Future<void> addNewPost(NewsFeedVO newPost) {
-    // TODO: implement addNewPost
-    throw UnimplementedError();
+    return _firestore
+        .collection(newsFeedCollection)
+        .doc(newPost.id.toString())
+        .set(newPost.toJson());
   }
 
   @override
   Future<void> deletePost(int postId) {
-    // TODO: implement deletePost
-    throw UnimplementedError();
+    return _firestore
+        .collection(newsFeedCollection)
+        .doc(postId.toString())
+        .delete();
   }
 
   @override

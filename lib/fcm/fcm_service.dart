@@ -61,7 +61,7 @@ class FCMService {
                 icon: android.smallIcon,
               ),
             ),
-            payload: "This is notification payLoad");
+            payload: remoteMessage.data["post_id"]);
       }
     });
 

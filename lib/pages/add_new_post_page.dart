@@ -171,7 +171,7 @@ class PostButtonView extends StatelessWidget {
           width: double.infinity,
           height: MARGIN_XXLARGE,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: bloc.themeColor,
             borderRadius: BorderRadius.circular(
               MARGIN_LARGE,
             ),

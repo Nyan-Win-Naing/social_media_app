@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:social_media_app/analytics/firebase_analytics_tracker.dart';
 import 'package:social_media_app/data/models/authentication_model.dart';
 import 'package:social_media_app/data/models/authentication_model_impl.dart';
 import 'package:social_media_app/data/models/social_model.dart';
@@ -31,12 +32,15 @@ class AddNewPostBloc extends ChangeNotifier {
 
   AddNewPostBloc({int? newsFeedId}) {
     _loggedInUser = _authenticationModel.getLoggedInUser();
-    if(newsFeedId != null) {
+    if (newsFeedId != null) {
       isInEditMode = true;
       _prepopulateDataForEditMode(newsFeedId);
     } else {
       _prepopulateDataForAddNewPost();
     }
+
+    /// Firebase
+    _sendAnalyticsData(addNewPostScreenReached, null);
   }
 
   void onNewPostTextChanged(String newPostDescription) {
@@ -44,7 +48,7 @@ class AddNewPostBloc extends ChangeNotifier {
   }
 
   Future onTapAddNewPost() {
-    if(newPostDescription.isEmpty) {
+    if (newPostDescription.isEmpty) {
       isAddNewPostError = true;
       _notifySafely();
       return Future.error("Error");
@@ -53,15 +57,18 @@ class AddNewPostBloc extends ChangeNotifier {
       _notifySafely();
       isAddNewPostError = false;
       // return _model.addNewPost(newPostDescription);
-      if(isInEditMode) {
+      if (isInEditMode) {
         return _editNewsFeedPost().then((value) {
           isLoading = false;
           _notifySafely();
+          _sendAnalyticsData(
+              editPostAction, {postId: mNewsFeed?.id.toString() ?? ""});
         });
       } else {
         return _createNewNewsFeedPost().then((value) {
           isLoading = false;
           _notifySafely();
+          _sendAnalyticsData(addNewPostAction, null);
         });
       }
     }
@@ -95,19 +102,20 @@ class AddNewPostBloc extends ChangeNotifier {
 
   void _prepopulateDataForAddNewPost() {
     userName = _loggedInUser?.userName ?? "";
-    profilePicture = "https://wallpapers.com/images/high/happy-jerry-mouse-2021-illustration-x1kxds1wc02j9l8l.jpg";
+    profilePicture =
+        "https://wallpapers.com/images/high/happy-jerry-mouse-2021-illustration-x1kxds1wc02j9l8l.jpg";
     _notifySafely();
   }
 
   void _notifySafely() {
-    if(!isDisposed) {
+    if (!isDisposed) {
       notifyListeners();
     }
   }
 
   Future<dynamic> _editNewsFeedPost() {
     mNewsFeed?.description = newPostDescription;
-    if(mNewsFeed != null) {
+    if (mNewsFeed != null) {
       return _model.editPost(mNewsFeed!, chosenImageFile);
     } else {
       return Future.error("Error");
@@ -116,5 +124,10 @@ class AddNewPostBloc extends ChangeNotifier {
 
   Future<void> _createNewNewsFeedPost() {
     return _model.addNewPost(newPostDescription, chosenImageFile);
+  }
+
+  /// Analytics
+  void _sendAnalyticsData(String name, Map<String, String>? parameters) async {
+    await FirebaseAnalyticsTracker().logEvent(name, parameters);
   }
 }

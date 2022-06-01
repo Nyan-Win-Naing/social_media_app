@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:social_media_app/analytics/firebase_analytics_tracker.dart';
 import 'package:social_media_app/data/models/authentication_model.dart';
 import 'package:social_media_app/data/models/authentication_model_impl.dart';
 import 'package:social_media_app/data/models/social_model.dart';
@@ -20,6 +21,8 @@ class NewsFeedBloc extends ChangeNotifier {
         notifyListeners();
       }
     });
+
+    _sendAnalyticsData();
   }
 
   void onTapDeletePost(int postId) async {
@@ -34,5 +37,9 @@ class NewsFeedBloc extends ChangeNotifier {
   void dispose() {
     super.dispose();
     isDisposed = true;
+  }
+
+  void _sendAnalyticsData() async {
+    await FirebaseAnalyticsTracker().logEvent(homeScreenReached, null);
   }
 }

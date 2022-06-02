@@ -55,6 +55,7 @@ dependencies:
   firebase_remote_config: ^2.0.8
   firebase_in_app_messaging: ^0.6.0+15
   firebase_installations: ^16.3.6
+  google_ml_kit: ^0.7.3
 
 dev_dependencies:
   flutter_test:
